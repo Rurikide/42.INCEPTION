@@ -1,0 +1,9 @@
+version: '3.8' 
+
+services: 
+  mariadb:
+    container_name: mariadb
+    build: requirements/mariadb
+    restart: always
+    hostname: mariadb
+
