@@ -6,4 +6,4 @@ services:
     build: requirements/mariadb
     restart: always
     hostname: mariadb
-
+    env_file: .env
