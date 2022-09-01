@@ -20,7 +20,7 @@ EOF
 
 	mysqld --skip-networking=1 &
 	for i in {0..42}; do
-		if mariadb -u root -proot --database=mysql <<<'SELECT 1;' &> /dev/null
+		if mariadb -uroot -proot --database=mysql <<<'SELECT 1;' &> /dev/null
 		then
 			break
 		fi
@@ -30,6 +30,7 @@ EOF
 	if [ "$i" = 42 ]
 	then
 		echo "Error: starting server"
+		exit 1
 	fi
 
 	mariadb -u root -proot < "$MYSQL_DATADIR/init_database.sql" && killall mysqld

@@ -7,3 +7,12 @@ services:
     restart: always
     hostname: mariadb
     env_file: .env
+  
+  wordpress:
+    container_name: wordpress
+    build: requirements/wordpress
+    restart: always
+    env_file: .env
+    depends_on: 
+      - mariadb
+
