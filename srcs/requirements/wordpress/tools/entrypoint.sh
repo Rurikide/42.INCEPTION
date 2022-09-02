@@ -20,7 +20,8 @@ if [ ! -f "/var/www/html/wp-config.php" ]
 then
 	unzip wordpress-6.0.2.zip >/dev/null
 	rm -rf wordpress-6.0.2.zip
-	mv wordpress/ html/
+	mv wordpress/* html/
+	rm -rf wordpress/
 
 	wp config create --allow-root \
 		--dbname=$MYSQL_DATABASE \
@@ -41,10 +42,10 @@ then
 		--path="/var/www/html"
 
 	wp user create --allow-root \
-		wp_user \
-		wp_email@tok.com \
+		$WP_USER \
+		$WP_EMAIL \
 		--role=author \
-		--user_pass=password \
+		--user_pass=$WP_PASS \
 		--path="/var/www/html" 
 fi
 

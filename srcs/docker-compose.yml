@@ -7,7 +7,10 @@ services:
     restart: always
     hostname: mariadb
     env_file: .env
-  
+    networks:
+      - inception
+    volumes:
+      - volume-mariadb:${MYSQL_DATADIR}
   wordpress:
     container_name: wordpress
     build: requirements/wordpress
@@ -15,4 +18,39 @@ services:
     env_file: .env
     depends_on: 
       - mariadb
+    networks:
+      - inception
+    volumes:
+      - volume-wordpress:/var/www/html
 
+  nginx:
+    container_name: nginx
+    build: requirements/nginx
+    restart: always
+    env_file: .env
+    depends_on: 
+      - wordpress
+    ports:
+      - 443:443
+    networks:
+      - inception
+    volumes:
+      - volume-wordpress:/var/www/html
+
+networks:
+  inception:
+    driver: bridge
+
+volumes:
+  volume-mariadb:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: ${VOLUME_PATH}/mariadb
+  volume-wordpress:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: ${VOLUME_PATH}/wordpress
